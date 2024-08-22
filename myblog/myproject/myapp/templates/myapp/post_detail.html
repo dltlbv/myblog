@@ -1,0 +1,66 @@
+{% extends "myapp/base.html" %}
+
+{% block title %}{{blog.title}}{% endblock %}
+
+{% block content %}
+
+    <div class="blog-detail">
+        <h1>{{ blog.title }}</h1>
+        <p>
+            <p class="author"><a href="{% url 'user_profile' blog.author.id %}"><strong>Автор:</strong> {{ blog.author.username }}</a></p>
+        <p><strong>Дата:</strong> {{ blog.created_in }}</p>
+        <p><strong>Категория:</strong> {{ blog.get_category_display }}</p>
+        {% if blog.image %}
+            <img src="{{ blog.image.url }}" alt="{{ blog.title }}" style="max-width: 800px;">
+        {% endif %}
+        <p>{{ blog.description }}</p>
+        <div class="blog-body">
+            {{ blog.body|safe }}
+        </div>
+    </div>
+        <p><strong>Просмотры:</strong> {{ blog.views }}</p>
+        <p><strong>Лайки:</strong> {{ blog.total_likes }}</p>
+        {% if user.is_authenticated %}
+            <form method="post" action="{% url 'like_blog' blog.id %}">
+                {% csrf_token %}
+                <button type="submit" class="btn btn-primary">
+                    {% if user in blog.likes.all %}
+                        Убрать лайк
+                    {% else %}
+                        Поставить лайк
+                    {% endif %}
+                </button>
+            </form>
+        {% endif %}
+        <div class="comments">
+            <h2>Комментарии:</h2>
+            {% for comment in blog.comments.all %}
+                <div class="comment">
+                    <p><strong>{{ comment.author.username }}</strong> - {{ comment.created_in }}</p>
+                    <p class="users_com">{{ comment.body }}</p>
+                    <div class="line"></div>
+                </div>
+            {% empty %}
+                <p>Комментариев пока нет.</p>
+            {% endfor %}        
+            {% if user.is_authenticated %}
+            <form method="post" action="{% url 'add_comment' blog.id %}">
+                {% csrf_token %}
+                <div class="form-group">
+                    <label for="comment-body">Добавить комментарий:</label>
+                    <textarea id="comment-body" name="body" class="form-control" rows="4" required></textarea>
+                </div>
+                <button type="submit" class="btn btn-primary">Отправить</button>
+            </form>
+        {% else %}
+            <p>Войдите, чтобы оставить комментарий.</p>
+        {% endif %}
+        </div>
+        {% if user == blog.author %}
+        <div class="post-actions">
+            <a class="post-action" href="{% url 'edit_blog' blog.id %}">Редактировать</a>
+            <a class="post-action" href="{% url 'delete_blog' blog.id %}">Удалить пост</a>
+        </div>
+        {% endif %}
+        
+{% endblock %}

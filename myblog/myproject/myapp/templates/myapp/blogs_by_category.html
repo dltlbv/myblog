@@ -1,0 +1,24 @@
+{% extends "myapp/base.html" %}
+
+{% block content %}
+
+    <h1>Посты в категории "{{ category }}"</h1>
+    <div class="container">
+        {% if blogs %}
+            {% for blog in blogs %}
+                <div class="post">
+                    {% if blog.image %}
+                    <img src="{{ blog.image.url }}" alt="{{ blog.title }}" style="width: 300px;">
+                    {% endif %}
+                    <h3><a href="{% url 'post_detail' blog.pk %}">{{ blog.title }}</a></h3>
+                    <p>{{ blog.description }}</p>
+                    <p class="author"><a href="{% url 'user_profile' blog.author.id %}">Автор: {{ blog.author }}</a></p>
+                    <p>Просмотры: {{ blog.views }} | Лайки: {{ blog.total_likes }}</p>
+                </div>
+            {% endfor %}
+        {% else %}
+            <p>Постов в этой категории пока нет.</p>
+        {% endif %}
+    </div>
+    
+{% endblock %}

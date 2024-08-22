@@ -1,0 +1,32 @@
+{% extends "myapp/base.html" %}
+
+{% block title %}Profile {{ user.username }}{% endblock %}
+
+{% block content %}
+
+  <h1>Профиль {{ user.username }}</h1>
+  <h4>Информация о пользователе</h4>
+  <div class="content">
+      <p>Логин: {{ user.username }}</p>
+      <p>Email: {{ user.email }}</p>
+      <p>Имя: {{ user.first_name }}</p>
+      <p>Фамилия: {{ user.last_name }}</p>
+      {% load l10n %}
+      <p>Дата регистрации: {{ user.date_joined|date:"d.m.y" }}</p>
+  </div>
+  <h4>Посты:</h4>
+  <div class="container">
+      {% for blog in blogs %}
+        <div class="post">
+          {% if blog.image %}
+            <img src="{{ blog.image.url }}" alt="{{ blog.title }}" style="width: 300px;">
+          {% endif %}
+          <h3><a href="{% url 'post_detail' blog.pk %}">{{ blog.title }}</a></h3>
+          <p>{{ blog.description }}</p>
+          <p class="author"><a href="{% url 'user_profile' blog.author.id %}">Автор: {{ blog.author }}</a></p>
+          <p>Просмотры: {{ blog.views }} | Лайки: {{ blog.total_likes }}</p>
+        </div>
+      {% endfor %}
+  </div>
+
+{% endblock %}

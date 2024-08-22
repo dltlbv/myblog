@@ -1,0 +1,16 @@
+{% extends "myapp/base.html" %}
+
+{% block title %}Delete{% endblock %}
+
+{% block content %}
+
+    <h1>Удалить Пост</h1>
+    <p>Вы уверены, что хотите удалить "{{ blog.title }}"?</p>
+    <form method="post">
+        {% csrf_token %}
+        <button class="form-button" type="submit">Да</button>
+    </form>
+    <div class="post-actions">
+    <a class="post-action" href="{% url 'profile' %}">Отмена</a></div>
+    
+{% endblock %}

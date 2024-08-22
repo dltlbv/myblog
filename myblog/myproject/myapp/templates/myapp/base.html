@@ -1,0 +1,69 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+<head>
+    <title>{% block title %}My Blog{% endblock %}</title>
+    <link rel="stylesheet" type="text/css" href="{% static 'css/style.css' %}">
+    <link href="https://fonts.googleapis.com/css2?family=Shadows+Into+Light+Two&display=swap" rel="stylesheet">
+</head>
+<body>
+    <header>
+        <nav class="navbar-top">
+            <div class="top_social_bar">
+                <a class="navbar-media" href="#"><img src="{% static 'images/facebook.png' %}" alt="logo"></a>
+                <a class="navbar-media" href="#"><img src="{% static 'images/instagram.png' %}" alt="logo"></a>
+                <a class="navbar-media" href="#"><img src="{% static 'images/telegram.png' %}" alt="logo"></a>
+                <a class="navbar-media" href="#"><img src="{% static 'images/twitter.png' %}" alt="logo"></a>
+                <a class="navbar-media" href="#"><img src="{% static 'images/whatsapp.png' %}" alt="logo"></a>
+            </div>
+            <div class="navbar-login">
+                <ul>
+                    {% if user.is_authenticated %}
+                    <li><a class="navbar-link" href="{% url 'profile' %}">Моя страница</a></li>
+                    <li>
+                        <form action="{% url 'logout' %}" method="post">
+                            {% csrf_token %}
+                            <button class="logout-but" type="submit">Выйти</button>
+                        </form>
+                    </li>
+                    {% else %}
+                        <li><a class="navbar-link" href="{% url 'login' %}">Вход</a></li>
+                        <li><a class="navbar-link" href="{% url 'register' %}">Регистрация</a></li>
+                    {% endif %}
+                </ul>
+            </div>
+        </nav>
+        <div class="line"></div>
+        <nav class="header-area">
+            <div class="navbar-title"><a href="{% url 'home' %}">My Blog</a></div>
+            <div class="navbar-menu">
+                <ul>
+                    <li><a class="navbar-menu-link" href="{% url 'home' %}">Главная страница</a></li>
+                    <li class="category">
+                        <a class="navbar-menu-link" href="{% url 'blog_list' %}">Посты</a>
+                        <div class="nav-category">
+                            <a class="navbar-category" href="{% url 'blogs_by_category' 'food' %}">Еда</a>
+                            <a class="navbar-category" href="{% url 'blogs_by_category' 'life' %}">Жизнь</a>
+                            <a class="navbar-category" href="{% url 'blogs_by_category' 'sport' %}">Спорт</a>
+                            <a class="navbar-category" href="{% url 'blogs_by_category' 'travel' %}">Путешествие</a>
+                            <a class="navbar-category" href="{% url 'blogs_by_category' 'hobby' %}">Хобби</a>
+                            <a class="navbar-category" href="{% url 'blogs_by_category' 'stars' %}">Звезды</a>
+                        </div>
+                    </li>
+                    <li><a class="navbar-menu-link" href="{% url 'contacts' %}">Контакты</a></li>
+                </ul>
+            </div>
+        </nav>
+    </header> 
+    
+    <main>
+        
+        {% block content %}{% endblock %}
+        
+    </main>
+    <footer>
+        <div class="line"></div>
+        <p class="copy">&copy; 2024 </p>
+    </footer>
+</body>
+</html>
