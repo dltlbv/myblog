@@ -27,7 +27,7 @@ urlpatterns = [
     path("category/<str:category>/", views.blogs_by_category, name="blogs_by_category"),
     path("blogs/", views.blog_list, name="blog_list"),
     path("contacts/", views.contacts, name="contacts"),
-    path('profile/<int:user_id>/', views.user_profile, name='user_profile'),
+    path("profile/<int:user_id>/", views.user_profile, name="user_profile"),
 ]
 
 if settings.DEBUG:

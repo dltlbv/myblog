@@ -51,3 +51,11 @@ class Comment(models.Model):
 
     def __str__(self):
         return f"Комментарий от {self.author} к {self.blog}"
+
+
+class BrowserStats(models.Model):
+    browser_name = models.CharField(max_length=100)
+    visit_count = models.PositiveIntegerField(default=0)
+
+    def __str__(self):
+        return f"{self.browser_name}: {self.visit_count} посещений"

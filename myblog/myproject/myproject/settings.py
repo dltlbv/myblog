@@ -48,6 +48,9 @@ MIDDLEWARE = [
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
+    "myapp.middleware.BrowserStatsMiddleware",
+    "myapp.middleware.RateLimitMiddleware",
+    "myapp.middleware.UnsupportedBrowserMiddleware",
 ]
 
 ROOT_URLCONF = "myproject.urls"
@@ -76,8 +79,12 @@ WSGI_APPLICATION = "myproject.wsgi.application"
 
 DATABASES = {
     "default": {
-        "ENGINE": "django.db.backends.sqlite3",
-        "NAME": BASE_DIR / "db.sqlite3",
+        "ENGINE": "django.db.backends.postgresql",
+        "NAME": "postgres",
+        "USER": "postgres",
+        "PASSWORD": "postgresql",
+        "HOST": "localhost",
+        "PORT": "5432",
     }
 }
 
@@ -129,4 +136,13 @@ DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
 LOGIN_REDIRECT_URL = "/profile/"
 
-LANGUAGE_CODE = 'ru-RU'
+LANGUAGE_CODE = "ru-RU"
+
+CACHES = {
+    "default": {
+        "BACKEND": "django.core.cache.backends.locmem.LocMemCache",
+        "LOCATION": "unique-snowflake",
+    }
+}
+
+UNSUPPORTED_BROWSERS = ["Internet Explorer", "Opera Mini"]
